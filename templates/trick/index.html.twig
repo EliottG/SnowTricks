@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les figures{% endblock %}
+
+{% block body %}
+<div class="container">
+    <a href="{{ path('trick.create') }}"><button class="btn btn-primary">Ajouter une figure</button></a>
+    <div class="row">
+    {% for trick in tricks %}
+    
+    <div class="card col-xl-3">
+        <a href="{{ path('trick.single' , { id : trick.id }) }}">
+        <div class="card-title">
+            <h3>{{ trick.title }} </h3>
+        </div>
+        <p>Publié depuis le {{ trick.formatedDate }} </p>
+    </div>
+    </a>
+
+    {% endfor %}
+</div>
+</div>
+{% endblock %}
