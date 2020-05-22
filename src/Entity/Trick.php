@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\TrickRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
@@ -97,4 +98,9 @@ class Trick
     public function getFormatedDate() {
        return $this->created_at->format('d/m/Y');
     }
+     public function getSlug() {
+         $slugger = new AsciiSlugger();
+         $this->slug = $slugger->slug($this->title, '-')->lower ();
+         return $this->slug;
+     }
 }

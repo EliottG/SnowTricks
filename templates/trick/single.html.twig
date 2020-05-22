@@ -4,6 +4,6 @@
 
 {% block body %}
     <a href="{{ path('trick')}}"><button class="btn btn-primary">Retour aux figures</button></a>
-    <a href="{{ path('trick.update' , { id : trick.id} )}}"><button class="btn btn-primary">Modifier la figure</button></a>
+    <a href="{{ path('trick.update' , { id : trick.id , slug : trick.slug} )}}"><button class="btn btn-primary">Modifier la figure</button></a>
     {{ trick.title }}
 {% endblock %}

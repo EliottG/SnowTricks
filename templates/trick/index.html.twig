@@ -9,7 +9,7 @@
     {% for trick in tricks %}
     
     <div class="card col-xl-3">
-        <a href="{{ path('trick.single' , { id : trick.id }) }}">
+        <a href="{{ path('trick.single' , {slug : trick.slug, id : trick.id}) }}">
         <div class="card-title">
             <h3>{{ trick.title }} </h3>
         </div>
