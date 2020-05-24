@@ -6,10 +6,13 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"}, message="Il y'a déjà un compte qui possède cet email")
+ * @UniqueEntity(fields="username", message="Ce pseudo est déjà pris")
  */
 class User implements UserInterface
 {
@@ -25,6 +28,13 @@ class User implements UserInterface
      */
     private $email;
 
+    
+    /**
+     * @ORM\Column(type="string", length=64, unique=true)
+     * @Assert\NotBlank()
+     */
+    private $username;
+
     /**
      * @ORM\Column(type="json")
      */
@@ -35,6 +45,11 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="text", nullable=true , length=250)
+     */
+    private $catch_phrase;
 
     public function getId(): ?int
     {
@@ -52,16 +67,25 @@ class User implements UserInterface
 
         return $this;
     }
-
+    public function getUsername()
+    {
+        return $this->username;
+    }
+    public function getSlug() 
+    {
+        $slugger = new AsciiSlugger();
+        $this->slug = $slugger->slug($this->username, '-')->lower ();
+        return $this->slug;
+    }
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
     /**
      * A visual identifier that represents this user.
      *
      * @see UserInterface
      */
-    public function getUsername(): string
-    {
-        return (string) $this->email;
-    }
 
     /**
      * @see UserInterface
@@ -112,5 +136,17 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getCatchPhrase(): ?string
+    {
+        return $this->catch_phrase;
+    }
+
+    public function setCatchPhrase(?string $catch_phrase): self
+    {
+        $this->catch_phrase = $catch_phrase;
+
+        return $this;
     }
 }
