@@ -47,7 +47,7 @@ class TrickController extends AbstractController
         ]);
     }
     /**
-     * @Route("/trick/update/{slug}-{id}", name="trick.update",  requirements={"slug": "[a-z0-9\-]*"})
+     * @Route("/trick/update/{id}-{slug}", name="trick.update",  requirements={"id":"\d+","slug": "[a-z0-9\-]+  "})
      */
     public function update($id, Request $request)
     {

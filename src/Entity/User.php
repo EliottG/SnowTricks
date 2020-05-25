@@ -51,6 +51,11 @@ class User implements UserInterface
      */
     private $catch_phrase;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $token_validate;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -146,6 +151,18 @@ class User implements UserInterface
     public function setCatchPhrase(?string $catch_phrase): self
     {
         $this->catch_phrase = $catch_phrase;
+
+        return $this;
+    }
+
+    public function getTokenValidate(): ?string
+    {
+        return $this->token_validate;
+    }
+
+    public function setTokenValidate(?string $token_validate): self
+    {
+        $this->token_validate = $token_validate;
 
         return $this;
     }
