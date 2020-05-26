@@ -19,11 +19,10 @@ class UserController extends AbstractController
         $this->repository = $repository;
     }
     /**
-     * @Route("/modifier/{slug}-{id}", name="user.update",  requirements={"slug": "[a-z0-9\-]*"})
+     * @Route("/modifier/{id}-{slug}", name="user.update",  requirements={"slug": "[a-z0-9\-]*"})
      */
-    public function update($id, Request $request)
+    public function update(User $user, Request $request)
     {
-        $user = $this->repository->find($id);
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

@@ -30,6 +30,7 @@
         "symfony/yaml": "5.0.*"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
@@ -64,7 +65,8 @@
         "reset": [
             "symfony console d:d:d --force",
             "symfony console d:d:c",
-            "symfony console d:m:m -n"
+            "symfony console d:m:m -n",
+            "symfony console doctrine:fixtures:load -n"
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",

@@ -56,6 +56,11 @@ class User implements UserInterface
      */
     private $token_validate;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $IsValid = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -163,6 +168,18 @@ class User implements UserInterface
     public function setTokenValidate(?string $token_validate): self
     {
         $this->token_validate = $token_validate;
+
+        return $this;
+    }
+
+    public function getIsValid(): ?bool
+    {
+        return $this->IsValid;
+    }
+
+    public function setIsValid(bool $IsValid): self
+    {
+        $this->IsValid = $IsValid;
 
         return $this;
     }

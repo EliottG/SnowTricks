@@ -47,11 +47,10 @@ class TrickController extends AbstractController
         ]);
     }
     /**
-     * @Route("/trick/update/{id}-{slug}", name="trick.update",  requirements={"id":"\d+","slug": "[a-z0-9\-]+  "})
+     * @Route("/trick/update/{id}-{slug}", name="trick.update",  requirements={"id":"\d+","slug": "[a-z0-9\-]+"})
      */
-    public function update($id, Request $request)
+    public function update(Trick $trick, Request $request)
     {
-        $trick = $this->repository->find($id);
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,12 +65,10 @@ class TrickController extends AbstractController
         ]);
     }
     /**
-     * @Route("/trick/{slug}-{id}", name="trick.single", requirements={"slug": "[a-z0-9\-]*"})
+     * @Route("/trick/{id}-{slug}", name="trick.single",  requirements={"id":"\d+","slug": "[a-z0-9\-]+"})
      */
-    public function single($slug,$id)
+    public function single(Trick $trick)
     {
-
-        $trick = $this->repository->find($id);
         return $this->render('trick/single.html.twig', [
             'trick' => $trick
             
