@@ -38,7 +38,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             $email = (new Email())
-            ->from('eliott.geoffroy@gmail.com')
+            ->from('snowtricks.official@gmail.com')
             ->to($user->getEmail())
             ->subject('Confirmation de votre compte Snowtricks')
             ->text('Bonjour, pour confirmer votre compte cliquez sur le lien ci-dessous :');
