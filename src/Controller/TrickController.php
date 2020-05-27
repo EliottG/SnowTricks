@@ -40,6 +40,7 @@ class TrickController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($trick);
             $entityManager->flush();
+            $this->addFlash('success', 'Votre Trick a bien été ajouté !');
             return $this->redirectToRoute('trick');
         }
         return $this->render('trick/create.html.twig', [
