@@ -21,7 +21,7 @@ class ConfirmResetType extends AbstractType
             // instead of being set onto the object directly,
             // this is read and encoded in the controller
             'type' => PasswordType::class,
-            'first_options' => ['label' => 'Mot de passe'],
+            'first_options' => ['label' => 'Nouveau mot de passe'],
             'second_options' => ['label' => 'Confirmer le mot de passe'],
             
             'mapped' => false,

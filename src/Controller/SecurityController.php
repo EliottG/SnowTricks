@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\ConfirmResetType;
+use App\Form\ResetType;
+use App\Form\UserType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 
@@ -46,11 +50,17 @@ class SecurityController extends AbstractController
     /**
      * @Route("/reinitialisation-{token}", name="reset.password")
      */
-    public function resetPassword($token, UserRepository $repository, Request $request) {
+    public function resetPassword($token, UserRepository $repository, Request $request, UserPasswordEncoderInterface $passwordEncoder) {
         $user = $repository->findOneBy(['reset_token' => $token]);
         $form = $this->createForm(ConfirmResetType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
             $user->setResetToken(null);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -59,6 +69,30 @@ class SecurityController extends AbstractController
            return $this->redirectToRoute('app_login');
         }
         return $this->render('security/reset.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/{id}-modifier/mot-de-passe" , name="update.password")
+     */
+    public function updatePassword(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder) {
+        $form = $this->createForm(ConfirmResetType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'Votre mot de passe a bien été modifié !');
+            return $this->redirectToRoute('home');
+        }
+        return $this->render('security/update.html.twig', [
             'form' => $form->createView()
         ]);
     }

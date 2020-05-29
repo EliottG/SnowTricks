@@ -5,7 +5,8 @@
 {% block body %}
 <div class='container'>
     {{ form_start(form)}}
-    <button class='btn btn-primary'>Modifier</button>
+    
     {{ form_rest(form) }}
+    <a href='{{ path('update.password', {id : id})}}'>Modifier mon mot de passe</a>
 </div>
 {% endblock %}
