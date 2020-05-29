@@ -6,9 +6,11 @@ use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 class TrickController extends AbstractController
 {
@@ -30,6 +32,7 @@ class TrickController extends AbstractController
     }
     /**
      * @Route("/trick/ajouter", name="trick.create")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function create(Request $request)
     {
@@ -40,6 +43,7 @@ class TrickController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($trick);
             $entityManager->flush();
+            $this->addFlash('success', 'Votre Trick a bien été ajouté !');
             return $this->redirectToRoute('trick');
         }
         return $this->render('trick/create.html.twig', [
@@ -47,11 +51,11 @@ class TrickController extends AbstractController
         ]);
     }
     /**
-     * @Route("/trick/update/{slug}-{id}", name="trick.update",  requirements={"slug": "[a-z0-9\-]*"})
+     * @Route("/trick/modifier/{id}-{slug}", name="trick.update",  requirements={"id":"\d+","slug": "[a-z0-9\-]+"})
+     *  @Security("is_granted('ROLE_USER')")
      */
-    public function update($id, Request $request)
+    public function update(Trick $trick, Request $request)
     {
-        $trick = $this->repository->find($id);
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,12 +70,10 @@ class TrickController extends AbstractController
         ]);
     }
     /**
-     * @Route("/trick/{slug}-{id}", name="trick.single", requirements={"slug": "[a-z0-9\-]*"})
+     * @Route("/trick/{id}-{slug}", name="trick.single",  requirements={"id":"\d+","slug": "[a-z0-9\-]+"})
      */
-    public function single($slug,$id)
+    public function single(Trick $trick)
     {
-
-        $trick = $this->repository->find($id);
         return $this->render('trick/single.html.twig', [
             'trick' => $trick
             
