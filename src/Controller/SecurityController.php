@@ -89,7 +89,7 @@ class SecurityController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            $this->addFlash('success', 'Votre mot de passe a bien été modifié !');
+            $this->addFlash('success', 'Votre mot de passe a bien été modifié ');
             return $this->redirectToRoute('home');
         }
         return $this->render('security/update.html.twig', [
