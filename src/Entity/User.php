@@ -61,6 +61,11 @@ class User implements UserInterface
      */
     private $IsValid = false;
 
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $reset_token;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,11 +107,7 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return ['ROLE_USER'];
     }
 
     public function setRoles(array $roles): self
@@ -180,6 +181,18 @@ class User implements UserInterface
     public function setIsValid(bool $IsValid): self
     {
         $this->IsValid = $IsValid;
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->reset_token;
+    }
+
+    public function setResetToken(?string $reset_token): self
+    {
+        $this->reset_token = $reset_token;
 
         return $this;
     }

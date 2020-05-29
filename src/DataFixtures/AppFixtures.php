@@ -20,6 +20,7 @@ class AppFixtures extends Fixture
             $user->setUsername('Utilisateur'.$i);
             $user->setCatchPhrase('Phrase de présentation n°'. $i);
             $user->setEmail('email.user@number'. $i);
+            $user->setRoles(['ROLE_USER']);
             $user->setPassword('$argon2i$v=19$m=65536,t=4,p=1$NDUudVVXRDNOUEdwR1RTUw$fSBVnxZF6mhYTH31ko+gh3fx/PLXtIroGGh9YX7htDw');
             $manager->persist($user);
             

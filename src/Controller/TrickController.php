@@ -6,9 +6,11 @@ use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 class TrickController extends AbstractController
 {
@@ -30,6 +32,7 @@ class TrickController extends AbstractController
     }
     /**
      * @Route("/trick/ajouter", name="trick.create")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function create(Request $request)
     {
@@ -48,7 +51,8 @@ class TrickController extends AbstractController
         ]);
     }
     /**
-     * @Route("/trick/update/{id}-{slug}", name="trick.update",  requirements={"id":"\d+","slug": "[a-z0-9\-]+"})
+     * @Route("/trick/modifier/{id}-{slug}", name="trick.update",  requirements={"id":"\d+","slug": "[a-z0-9\-]+"})
+     *  @Security("is_granted('ROLE_USER')")
      */
     public function update(Trick $trick, Request $request)
     {

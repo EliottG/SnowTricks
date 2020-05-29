@@ -3,12 +3,16 @@
 {% block title %}Les figures{% endblock %}
 
 {% block body %}
-<div class="container">
+{% if app.user %}
+<div class="mt-5 text-center">
     <a href="{{ path('trick.create') }}"><button class="btn btn-primary">Ajouter une figure</button></a>
+</div>
+{% endif %}
+<div class="container-fluid mt-4">
     <div class="row">
     {% for trick in tricks %}
-    
-    <div class="card col-xl-3">
+    <div class="col-sm-6 col-lg-4 col-xl-3 text-center mt-4">
+    <div class="card">
         <a href="{{ path('trick.single' , {slug : trick.slug, id : trick.id}) }}">
         <div class="card-title">
             <h3>{{ trick.title }} </h3>
@@ -16,8 +20,14 @@
         <p>Publié depuis le {{ trick.formatedDate }} </p>
     </div>
     </a>
+</div>
+
+
+
+    
 
     {% endfor %}
+
 </div>
 </div>
 {% endblock %}
