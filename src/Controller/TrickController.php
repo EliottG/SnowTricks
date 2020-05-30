@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
+use App\Form\CategoryTrickType;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManager;
@@ -23,11 +24,30 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick", name="trick")
      */
-    public function index()
+    public function index(Request $request)
     {
+        $trick = new Trick();
+        $form = $this->createForm(CategoryTrickType::class, $trick);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($trick->getCategory() != 'Tout') {
+            $tricks = $this->repository->findBy(['category' => $trick->getCategory()]);
+            return $this->render('trick/index.html.twig', [
+                'tricks' => $tricks,
+                'form' => $form->createView()
+            ]);
+            } else {
+                $tricks = $this->repository->findAll();   
+                return $this->render('trick/index.html.twig', [
+                    'tricks' => $tricks,
+                    'form' => $form->createView()
+                ]);
+            }
+        }
         $tricks = $this->repository->findAll();   
         return $this->render('trick/index.html.twig', [
-            'tricks' => $tricks
+            'tricks' => $tricks,
+            'form' => $form->createView()
         ]);
     }
     /**
@@ -78,5 +98,15 @@ class TrickController extends AbstractController
             'trick' => $trick
             
         ]);
+    }
+    /**
+     * @Route("/trick/delete-{id}" , name="trick.delete")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function delete(Trick $trick) {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($trick);
+        $em->flush();
+        return $this->redirectToRoute('trick');
     }
 }

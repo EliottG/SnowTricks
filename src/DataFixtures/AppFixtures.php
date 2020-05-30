@@ -14,7 +14,7 @@ class AppFixtures extends Fixture
         for ($i = 1; $i <= 20 ; $i ++) {
             $trick = new Trick();
             $trick->setTitle('Ma figure n°' .$i);
-            $trick->setCategory('Freestyle');
+            $trick->setCategory('Slide');
             $manager->persist($trick);
             $user = new User();
             $user->setUsername('Utilisateur'.$i);

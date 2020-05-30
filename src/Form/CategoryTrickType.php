@@ -9,25 +9,24 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TrickType extends AbstractType
+class CategoryTrickType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('description')
             ->add('category', ChoiceType::class, [
-                'label' => 'Catégorie',
+                'label' => 'Groupe',
                 'choices' => [
+                    'Tout' => 'Tout',
                     'Slide' => 'Slide',
                     'Grab' => 'Grab',
                     'Flip' => 'Flip',
                     'Rotation' => 'Rotation'
                 ]
             ])
-            ->add('Sauvegarder', SubmitType::class);
-
-        
+            ->add('Rechercher', SubmitType::class)
+            
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
