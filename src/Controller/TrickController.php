@@ -82,6 +82,7 @@ class TrickController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($trick);
             $entityManager->flush();
+            $this->addFlash('success', 'Le trick a bien été modifié');
             return $this->redirectToRoute('trick');
         }
         return $this->render('trick/update.html.twig', [
@@ -107,6 +108,7 @@ class TrickController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->remove($trick);
         $em->flush();
+        $this->addFlash('fail', 'Le trick a bien été supprimé !');
         return $this->redirectToRoute('trick');
     }
 }

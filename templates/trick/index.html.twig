@@ -9,34 +9,31 @@
 </div>
 {% endif %}
 <div class="col-xl-4">
-     {{ form_start(form) }}
-     {{ form_end(form) }}
+    {{ form_start(form) }}
+    {{ form_end(form) }}
 </div>
 <div class="container-fluid mt-4">
     <div class="row">
-    {% for trick in tricks %}
-    <div class="col-sm-6 col-lg-4 col-xl-3 text-center mt-4">
-    <div class="card">
-        <div class="row">
-        <div class="col-8">
-            <a class="text-left" href="{{ path('trick.single' , {slug : trick.slug, id : trick.id}) }}"><h4>{{ trick.title }} </h4></a>
+        {% for trick in tricks %}
+        <div class="col-sm-6 col-lg-4 col-xl-3 text-center mt-4 one-trick" data-trick-group={{trick.category}}>
+            <div class="card">
+                <div class="row">
+                    <div class="col-8">
+                        <a class="text-left" href="{{ path('trick.single' , {slug : trick.slug, id : trick.id}) }}">
+                            <h4>{{ trick.title }} </h4>
+                        </a>
+                    </div>
+                    {% if app.user %}
+                    <div class="col-4">
+                        <a href="{{ path('trick.update', { id: trick.id , slug: trick.slug }) }}">Update</a>
+                        <a href="{{ path('trick.delete', {id: trick.id}) }}">delete</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
     </div>
-    {% if app.user %}
-    <div class="col-4">
-        <a href="{{ path('trick.update', { id: trick.id , slug: trick.slug }) }}">Update</a>
-        <a href="{{ path('trick.delete', {id: trick.id}) }}">delete</a>
-    </div>
-    {% endif %}
-</div>
-</div>
-</div>
-
-
-
-    
-
-    {% endfor %}
-
-</div>
 </div>
 {% endblock %}

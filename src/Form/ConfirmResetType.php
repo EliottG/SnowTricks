@@ -37,7 +37,7 @@ class ConfirmResetType extends AbstractType
                 ]),
             ],
         ])
-        ->add('Envoyer', SubmitType::class);
+        ->add('Confirmer', SubmitType::class);
 }
         
     
