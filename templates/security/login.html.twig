@@ -24,7 +24,8 @@
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
-    <a href='{{ path('user.reset')}}'><p>Mot de passe oublié </p></a>
+    <a href='{{ path('user.reset')}}'><p>Mot de passe oublié ?</p></a>
+    <a href='{{ path('app_register') }}'><p>Toujours pas de compte ? </p></a> 
 
     {#
         Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
