@@ -6,5 +6,7 @@
     <div class="container">
     {{ form_start(form) }}
     {{ form_rest(form) }}
+    <a class='delete'  href="{{ path('trick.delete', {id: trick.id}) }}">Supprimer</a>
 </div>
+
 {% endblock %}
