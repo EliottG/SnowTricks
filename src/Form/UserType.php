@@ -24,7 +24,8 @@ class UserType extends AbstractType
                 'label' => 'Bio (250 caractères)'
             ])
             ->add('picture_name', FileType::class, [
-                'label' => 'Photo de profil (png ou jpeg)',
+                'required' => false,
+                'label' => 'Photo de profil (png ou jpg)',
                 'mapped' => false, 
                 'constraints' => [
                     new File([
