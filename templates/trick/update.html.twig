@@ -6,6 +6,7 @@
     <div class="container">
     {{ form_start(form) }}
     {{ form_rest(form) }}
+
     <h3>Images</h3>
     <div class="row">
     {% for picture in trick.pictures  %}
@@ -16,4 +17,6 @@
     {% endfor %}
 </div>
     </div>
+    <a class='delete'  href="{{ path('trick.delete', {id: trick.id}) }}">Supprimer le Trick</a>
+</div>
 {% endblock %}

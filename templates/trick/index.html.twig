@@ -26,14 +26,14 @@
                     {% if app.user %}
                     <div class="col-4">
                         <a href="{{ path('trick.update', { id: trick.id , slug: trick.slug }) }}">Update</a>
-                        <a href="{{ path('trick.delete', {id: trick.id}) }}">delete</a>
+                        
+                        <a class='delete'  href="{{ path('trick.delete', {id: trick.id}) }}">delete</a>
                     </div>
                     {% endif %}
                 </div>
             </div>
         </div>
         {% endfor %}
-
     </div>
 </div>
 {% endblock %}
