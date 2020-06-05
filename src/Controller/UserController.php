@@ -13,6 +13,9 @@ use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class UserController extends AbstractController
 {
@@ -25,19 +28,37 @@ class UserController extends AbstractController
     /**
      * @Route("/modifier/{id}-{slug}", name="user.update",  requirements={"slug": "[a-z0-9\-]*"})
      */
-    public function update(User $user, Request $request)
+    public function update(User $user, Request $request, SluggerInterface $slugger)
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $pictureFile = $form->get('picture_name')->getData();
+            if ($pictureFile) {
+                $originalFilename =pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$pictureFile->guessExtension();
+                try {
+                    $pictureFile->move(
+                        $this->getParameter('profil_directory'),
+                        $newFilename
+                    );
+                    
+                } catch (FileException $e) {
+
+                }
+                $user->setPictureName($newFilename);
+            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            $this->addFlash('success','Votre profil a bien été modifié');
             return $this->redirectToRoute('home');
         }
         return $this->render('user/index.html.twig', [
             'form' => $form->createView(),
-            'id' => $user->getId()
+            'id' => $user->getId(),
+            'user' => $user
         ]);
     }
     /**

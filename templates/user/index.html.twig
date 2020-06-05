@@ -3,9 +3,18 @@
 {% block title %}Profil {{ app.user.username }}{% endblock %}
 
 {% block body %}
+
 <div class='container'>
+    <div class="text-center card col-xl-3 mt-4 mb-3 pb-3 pt-2">
+        <div class="row">
+            <img class='col-xl-5 mt-3' src="/uploads/profil/{{ user.pictureName }}" alt='Photo de profil' width='100px'>
+            
+            <div class="col-xl-7"><h3>{{ user.username }}</h3></div>
+        </div>
+    </div>
+
     {{ form_start(form)}}
-    
+
     {{ form_rest(form) }}
     <a href='{{ path('update.password', {id : id})}}'>Modifier mon mot de passe</a>
 </div>
