@@ -6,7 +6,17 @@
     <div class="container">
     {{ form_start(form) }}
     {{ form_rest(form) }}
-    <a class='delete'  href="{{ path('trick.delete', {id: trick.id}) }}">Supprimer</a>
-</div>
 
+    <h3>Images</h3>
+    <div class="row">
+    {% for picture in trick.pictures  %}
+    <div class="col-xl-3">
+        <img class='pr-2' src="/uploads/trick/{{ picture.name }}" alt='Photo de tricks' width='200px'>
+    </div>
+    <a method='DELETE' href="{{ path('delete.trick.picture', {id : picture.id , trickId : trick.id , slug : trick.slug}) }}">Supprimer</a>
+    {% endfor %}
+</div>
+    </div>
+    <a class='delete'  href="{{ path('trick.delete', {id: trick.id}) }}">Supprimer le Trick</a>
+</div>
 {% endblock %}
