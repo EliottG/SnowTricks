@@ -42,6 +42,7 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/déconnexion", name="app_logout")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function logout()
     {

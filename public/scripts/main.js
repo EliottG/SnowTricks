@@ -9,3 +9,15 @@ confirmDelete[i].addEventListener('click', function(event) {
   }
     });
 }
+
+$('.custom-file-input').on('change', function (event) {
+  let inputFile = event.currentTarget;
+
+  // TODO concatener les noms des fichiers
+  let label = inputFile.files.length;
+  $(inputFile).parent()
+      .find('.custom-file-label')
+      .html(label);
+});
+
+

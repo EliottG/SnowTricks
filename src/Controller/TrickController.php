@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Picture;
 use App\Entity\Trick;
+use App\Entity\Video;
 use App\Form\CategoryTrickType;
 use App\Form\TrickType;
 use App\Repository\PictureRepository;
@@ -90,10 +91,38 @@ class TrickController extends AbstractController
     public function update(Trick $trick, Request $request)
     {
 
-        $pictures = $trick->getPictures();
+        $trickId = $trick->getId();
+        $trickSlug = $trick->getSlug();
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $getVideos = $form->get('videos')->getData();
+            $videos = explode(',', $getVideos);
+            foreach ($videos as $video) {
+                if ($video != null) {
+                if (preg_match('#youtube#', $video) || preg_match('#dailymotion#', $video)) {
+                    if (preg_match('#youtube#', $video)) {
+                        $pattern = "#watch\?v=#";
+                        $replace =  "embed/";
+                        $video = preg_replace($pattern, $replace, $video);
+                        
+                    } else if ((preg_match('#dailymotion#', $video))) {
+                        $pattern = "#video#";
+                        $replace =  "embed/video";
+                        $video = preg_replace($pattern, $replace, $video);
+                    }
+                    $trickVideo = new Video();
+                    $trickVideo->setLink($video);
+                    $trick->addVideo($trickVideo);
+                } else {
+                    $this->addFlash('fail', 'L\'une des vidéos que vous souhaitez ajouter ne provient pas des sites autorisés');
+                    return $this->redirectToRoute('trick.update', [
+                        'id' => $trickId,
+                        'slug' => $trickSlug
+                    ]);
+                }
+            }
+        }
             $pictures = $form->get('picture')->getData();
             foreach ($pictures as $picture) {
                 $file = md5(uniqid()) . '.' . $picture->guessExtension();
@@ -109,7 +138,10 @@ class TrickController extends AbstractController
             $entityManager->persist($trick);
             $entityManager->flush();
             $this->addFlash('success', 'Le trick a bien été modifié');
-            return $this->redirectToRoute('trick');
+            return $this->redirectToRoute('trick.update', [
+                'id' => $trickId,
+                'slug' => $trickSlug
+            ]);
         }
         return $this->render('trick/update.html.twig', [
             'form' => $form->createView(),
@@ -131,24 +163,46 @@ class TrickController extends AbstractController
      * @Route("/trick/delete-{id}" , name="trick.delete")
      * @Security("is_granted('ROLE_USER')")
      */
-    public function delete(Trick $trick)
+    public function delete(Request $request, Trick $trick)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($trick);
-        $em->flush();
-        $this->addFlash('fail', 'Le trick a bien été supprimé !');
+        if ($this->isCsrfTokenValid("trick_delete", $request->query->get('csrf'))) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($trick);
+            $em->flush();
+            $this->addFlash('fail', 'Le trick a bien été supprimé !');
+        }
+
         return $this->redirectToRoute('trick');
     }
     /**
      * @Route("/supprimer/image/{id}", name="delete.trick.picture")
+     * @Security("is_granted('ROLE_USER')")
      */
-    public function deletePicture(Picture $picture, TrickRepository $repository)
+    public function deletePicture(Picture $picture)
     {
         $trick = $picture->getTrick();
         $trickId = $trick->getId();
         $trickSlug = $trick->getSlug();
         $em = $this->getDoctrine()->getManager();
         $em->remove($picture);
+        $em->flush();
+        $this->addFlash('fail', 'Vidéo supprimée');
+        return $this->redirectToRoute('trick.update', [
+            'id' => $trickId,
+            'slug' => $trickSlug
+        ]);
+    }
+    /**
+     * @Route("/supprimer/video/{id}", name="delete.trick.video")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function deleteVideo(Video $video) {
+        $trick = $video->getTrick();
+        $trickId = $trick->getId();
+        $trickSlug = $trick->getSlug();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($video);
         $em->flush();
         $this->addFlash('fail', 'Image supprimée');
         return $this->redirectToRoute('trick.update', [
