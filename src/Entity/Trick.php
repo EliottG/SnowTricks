@@ -48,7 +48,8 @@ class Trick
     private $pictures;
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick",
+     * cascade= {"persist"})
      */
     private $videos;
     public function __construct()

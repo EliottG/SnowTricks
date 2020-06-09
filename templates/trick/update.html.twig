@@ -3,6 +3,10 @@
 {% block title %}Modifier{% endblock %}
 
 {% block body %}
+
+
+
+
     <div class="container">
     {{ form_start(form) }}
     {{ form_rest(form) }}
@@ -11,12 +15,23 @@
     <div class="row">
     {% for picture in trick.pictures  %}
     <div class="col-xl-3">
-        <img class='pr-2' src="/uploads/trick/{{ picture.name }}" alt='Photo de tricks' width='200px'>
+        <img class='pr-2' src="/uploads/trick/{{ picture.name }}" alt='Photo de tricks' width='300px' height="200px">
+        <a method='DELETE' href="{{ path('delete.trick.picture', {id : picture.id , trickId : trick.id , slug : trick.slug}) }}">Supprimer</a>
     </div>
-    <a method='DELETE' href="{{ path('delete.trick.picture', {id : picture.id , trickId : trick.id , slug : trick.slug}) }}">Supprimer</a>
+
     {% endfor %}
 </div>
-    </div>
     <a class='delete'  href="{{ path('trick.delete', {id: trick.id}) }}">Supprimer le Trick</a>
+
+<h3>Vidéos</h3>
+<div class="row">
+{% for video in trick.videos %}
+<div class="col-xl-3">
+    <embed src="{{ video.link }}"  allowfullscreen="true" width="300" height="200px">
+    <a method='DELETE' href="{{ path('delete.trick.video', {id : video.id , trickId : trick.id , slug : trick.slug}) }}">Supprimer</a>
+</div>
+
+{% endfor %}
+</div>
 </div>
 {% endblock %}
