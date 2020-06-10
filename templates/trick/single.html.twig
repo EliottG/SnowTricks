@@ -6,21 +6,37 @@
 <div class='container'>
     <a href="{{ path('trick')}}"><button class="btn btn-primary">Retour aux figures</button></a>
     {% if app.user %}
-    <a href="{{ path('trick.update' , { id : trick.id , slug : trick.slug} )}}"><button class="btn btn-primary">Modifier</button></a>
+    <a href="{{ path('trick.update' , { id : trick.id , slug : trick.slug} )}}"><button
+            class="btn btn-primary">Modifier</button></a>
     {% endif %}
     <h1>{{ trick.title }} </h1>
     <p>{{ trick.description }}</p>
     <div class='row'>
-     {% for picture in trick.pictures  %}
-     <div class="col-xl-3">
-        <img class='pr-2' src="/uploads/trick/{{ picture.name }}" alt='Photo de tricks' width='300px' height="200px">
+        {% for picture in trick.pictures  %}
+        <div class="col-xl-3">
+            <img class='pr-2' src="/uploads/trick/{{ picture.name }}" alt='Photo de tricks' width='300px'
+                height="200px">
+        </div>
+        {% endfor %}
     </div>
+    <div class='row'>
+        {% for video in trick.videos %}
+        <div class="col-xl-3">
+            <embed src="{{ video.link }}" allowfullscreen="true" width="300" height="200px">
+        </div>
+        {% endfor %}
+    </div>
+    {{ form_start(form) }}
+    {{ form_end(form)  }}
+    <h2>Commentaires</h2>
+    {% for comment in trick.comments %}
+    <p>{% if comment.user.pictureName %}
+        <img class='pr-2' src="/uploads/profil/{{ comment.user.pictureName }}" alt='Photo de profil' width='80px' height='80px'>
+        {% else %}
+        <img class='pr-2' src="/uploads/profil/usual.jpg" alt='Photo de profil' width='80px' height='80px'>
+        {% endif %}
+    <h3>{{ comment.user.username }}</h3>{{ comment.content }}</p>
     {% endfor %}
-    <div class="col-xl-3">
-    {% for video in trick.videos %}
-    <embed src="{{ video.link }}"  allowfullscreen="true" width="300" height="200px">
-    {% endfor %}
-    </div>
-    </div>
+
 </div>
 {% endblock %}
