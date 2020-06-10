@@ -26,8 +26,10 @@
         </div>
         {% endfor %}
     </div>
+    {% if app.user %}
     {{ form_start(form) }}
     {{ form_end(form)  }}
+    {% endif %}
     <h2>Commentaires</h2>
     {% for comment in trick.comments %}
     <p>{% if comment.user.pictureName %}
