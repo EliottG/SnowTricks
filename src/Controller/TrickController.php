@@ -2,14 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Picture;
 use App\Entity\Trick;
+use App\Entity\User;
 use App\Entity\Video;
 use App\Form\CategoryTrickType;
+use App\Form\CommentType;
 use App\Form\TrickType;
-use App\Repository\PictureRepository;
 use App\Repository\TrickRepository;
-use Doctrine\ORM\EntityManager;
+use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -152,10 +154,28 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/{id}-{slug}", name="trick.single",  requirements={"id":"\d+","slug": "[a-z0-9\-]+"})
      */
-    public function single(Trick $trick)
+    public function single(Trick $trick, Request $request, UserRepository $repository, User $user)
     {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $user = $repository->find($this->getUser()->getId());
+            $comment->setTrick($trick);
+            $comment->setUser($user);
+            $em->persist($comment);
+            $em->flush();
+            $this->addFlash('success', 'Votre commentaire a bien été ajouté !');
+            return $this->redirectToRoute('trick.single', [
+                'id' => $trick->getId(),
+                'slug' => $trick->getSlug()
+            ]);
+        }
         return $this->render('trick/single.html.twig', [
-            'trick' => $trick
+            'form' => $form->createView(),
+            'trick' => $trick,
+            'user' => $user
 
         ]);
     }
