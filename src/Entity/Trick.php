@@ -62,7 +62,7 @@ class Trick
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $main_image;
+    private $main_image = 'main.png';
     public function __construct()
     {
         $this->created_at = new DateTime();

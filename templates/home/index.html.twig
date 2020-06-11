@@ -5,36 +5,35 @@
 {% block body %}
 <div class='background-home'>
     <div class="container">
-        <h1 class='pt-5 text-uppercase text-light'>Riders<br> on<br> the<br> storm *</h1>
+        <h1 class='pt-5 text-light font-weight-bold'>SnowTricks</h1>
+        <h2 class='pt-2 text-uppercase text-info'>Riders<br> on<br> the<br> storm *</h2>
     </div>
 </div>
 
 {% if app.user %}
 <div class="mt-5 text-center">
-    <a href="{{ path('trick.create') }}"><button class="btn btn-primary">Ajouter une figure</button></a>
+    <a href="{{ path('trick.create') }}"><button class="btn btn-dark">Ajouter une figure</button></a>
 </div>
 {% endif %}
-<div id="tricks" class="container-fluid mt-4">
+<div id="tricks" class="container mt-4">
     <div class="row">
         {% for trick in tricks %}
-        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 text-center mt-4 one-trick">
-            <div class="card">
-                <div class="row">
-                    <div class="col-xl-12">
-                    </div>
-                    <div class="col-8">
-                        <a class="text-left" href="{{ path('trick.single' , {slug : trick.slug, id : trick.id}) }}">
-                            <h4>{{ trick.title }} </h4>
-                        </a>
-                    </div>
-                    {% if app.user %}
-                    <div class="col-4">
-                        <a href="{{ path('trick.update', { id: trick.id , slug: trick.slug }) }}">Update</a>
-                        
-                        <a class='delete'  href="{{ path('trick.delete', {id: trick.id,csrf: csrf_token('trick_delete')}) }}">delete</a>
-                    </div>
-                    {% endif %}
+        <div class="col-lg-12 col-xl-3 mt-4 text-center one-trick">
+                    <img class="col-xl-12" src='/uploads/trick/{{ trick.mainImage }}' height="200px">
+                    <div class="row body-card">
+                <div class="col-7">
+                    <a class="text-left" href="{{ path('trick.single' , {slug : trick.slug, id : trick.id}) }}">
+                        <h4 class="ml-3">{{ trick.title }} </h4>
+                    </a>
                 </div>
+                {% if app.user %}
+                <div class="col-5">
+                    <a href="{{ path('trick.update', { id: trick.id , slug: trick.slug }) }}"><img src="/pictures/crayon.png" width="37px" alt="editer"></a>
+
+                    <a class='delete'
+                        href="{{ path('trick.delete', {id: trick.id,csrf: csrf_token('trick_delete')}) }}"><img src="/pictures/poubelle.png" width="37px" alt="supprimer"></a>
+                </div>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
