@@ -7,10 +7,11 @@ use App\Entity\Trick;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TrickType extends AbstractType
@@ -29,11 +30,16 @@ class TrickType extends AbstractType
                     'Rotation' => 'Rotation'
                 ]
             ])
+            ->add('main_image', FileType::class, [
+                'required' => false,
+                'mapped' => false, 
+                'label' => 'Image principale'
+            ])
             ->add('picture', FileType::class, [
                 'label' => 'Images',
                 'multiple' => true,
                 'mapped' => false,
-                'required' => false
+                'required' => false,
             ])
             ->add('videos', TextType::class, [
                 'label' => 'Liens vidéos Youtube, Dailymotion (si vous souhaitez en mettre plusieurs séparez les par une virgule)',

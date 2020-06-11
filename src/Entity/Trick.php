@@ -58,6 +58,11 @@ class Trick
      * cascade= {"persist"})
      */
     private $comments;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $main_image;
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -218,6 +223,18 @@ class Trick
                 $comment->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMainImage(): ?string
+    {
+        return $this->main_image;
+    }
+
+    public function setMainImage(string $main_image): self
+    {
+        $this->main_image = $main_image;
 
         return $this;
     }
