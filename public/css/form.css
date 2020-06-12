@@ -1,0 +1,28 @@
+.login-form {
+    width: 450px;
+    border: 1px solid grey;
+    padding: 40px 80px 40px 80px;
+    margin: auto;
+}
+
+.login-form input {
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: 1px solid grey;
+    border-radius: 0px;
+}
+.login-form button {
+    text-align: center;
+}
+.register-form {
+    width: 450px;
+    border: 1px solid grey;
+    padding: 40px 80px 40px 80px;
+    margin: auto;
+}
+.register-form input {
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: 1px solid grey;
+    border-radius: 0px;
+}

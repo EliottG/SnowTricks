@@ -15,25 +15,27 @@
     <a href="{{ path('trick.create') }}"><button class="btn btn-dark">Ajouter une figure</button></a>
 </div>
 {% endif %}
-<div id="tricks" class="container mt-4">
+<div id="tricks" class="container-fluid mt-4">
     <div class="row">
         {% for trick in tricks %}
-        <div class="col-lg-12 col-xl-3 mt-4 text-center one-trick">
-                    <img class="col-xl-12" src='/uploads/trick/{{ trick.mainImage }}' height="200px">
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <div class="one-trick">
+                    <img class="card-picture" src='/uploads/trick/{{ trick.mainImage }}' height="200px">
                     <div class="row body-card">
-                <div class="col-7">
+                <div class="col-9">
                     <a class="text-left" href="{{ path('trick.single' , {slug : trick.slug, id : trick.id}) }}">
-                        <h4 class="ml-3">{{ trick.title }} </h4>
+                        <h4 class="text-uppercase ml-3">{{ trick.title }} </h4>
                     </a>
                 </div>
                 {% if app.user %}
-                <div class="col-5">
+                <div class="col-3">
                     <a href="{{ path('trick.update', { id: trick.id , slug: trick.slug }) }}"><img src="/pictures/crayon.png" width="37px" alt="editer"></a>
 
                     <a class='delete'
                         href="{{ path('trick.delete', {id: trick.id,csrf: csrf_token('trick_delete')}) }}"><img src="/pictures/poubelle.png" width="37px" alt="supprimer"></a>
                 </div>
                 {% endif %}
+                </div>
             </div>
         </div>
         {% endfor %}
