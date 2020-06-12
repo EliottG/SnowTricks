@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class='container'>
-    <a href="{{ path('trick')}}"><button class="btn btn-primary">Retour aux figures</button></a>
+    <a href="/#tricks"><button class="btn btn-primary">Retour aux figures</button></a>
     {% if app.user %}
     <a href="{{ path('trick.update' , { id : trick.id , slug : trick.slug} )}}"><button
             class="btn btn-primary">Modifier</button></a>

@@ -4,16 +4,17 @@
 
 {% block body %}
 <div class="container">
-    <h1>S'inscrire</h1>
-
+    <h1 class='font-weight-bold text-center mt-5 mb-5'>S'inscrire</h1>
+<div class='register-form'>
     {{ form_start(registrationForm) }}
     {{ form_row(registrationForm.email) }}
     {{ form_row(registrationForm.username) }}
     {{ form_row(registrationForm.plainPassword) }}
 
-    <button type="submit" class="btn btn-primary">Créer un compte</button>
+    <button type="submit" class="btn btn-dark mb-2">Créer un compte</button>
     
     {{ form_end(registrationForm) }}
     <a class='pt-3' href='{{ path('app_login') }}'><p>Déjà un compte ? </p></a>
+</div>
 </div>
 {% endblock %}

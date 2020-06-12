@@ -1,0 +1,34 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+.background-home {
+    position: relative;
+    background-image: url('../pictures/background.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 90vh;
+}
+.one-trick {
+    border: 1px solid rgb(128, 128, 128, 0.5);
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background: linear-gradient(to left, rgb(230, 230, 230, 0.8), rgb(226, 226, 226));
+    transition: all 0.3s ease-in;
+}
+.card-picture {
+    margin-bottom: 10px;
+    width: 100%;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+.one-trick a {
+    text-decoration: none;
+    color: black;
+}
+html {
+    scroll-behavior: smooth;
+}
+.one-trick:hover {
+    background: linear-gradient(to right, rgb(230, 230, 230, 0.8), rgb(226, 226, 226));
+}
