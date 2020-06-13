@@ -11,24 +11,27 @@
 }
 .one-trick {
     border: 1px solid rgb(128, 128, 128, 0.5);
-    margin-bottom: 20px;
+    margin-bottom: 50px;
     border-radius: 10px;
-    background: linear-gradient(to left, rgb(230, 230, 230, 0.8), rgb(226, 226, 226));
-    transition: all 0.3s ease-in;
+    padding-bottom: 30px;
+    background: linear-gradient(to right, rgb(230, 230, 230, 0.8), rgb(226, 226, 226));
 }
 .card-picture {
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     width: 100%;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
 }
 .one-trick a {
+    
     text-decoration: none;
     color: black;
+    
 }
 html {
     scroll-behavior: smooth;
 }
 .one-trick:hover {
-    background: linear-gradient(to right, rgb(230, 230, 230, 0.8), rgb(226, 226, 226));
+    transition-delay: 0.6s;
+    background: linear-gradient(to left, rgb(230, 230, 230, 0.8), rgb(226, 226, 226));
 }

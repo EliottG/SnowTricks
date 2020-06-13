@@ -1,0 +1,33 @@
+.trick-single {
+    margin-top: 40px;
+    border: 1px solid rgb(197, 197, 197,0.6);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+.comments {
+    border: 1px solid rgb(197, 197, 197,0.8);
+    margin-bottom: 50px;
+    margin-top : 30px;
+    border-radius: 10px;
+    padding: 50px;
+    
+}
+.comment {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgb(219, 219, 219);
+   
+}
+.comment-picture {
+    border-radius: 100px;
+    margin-left: 30px;
+    margin-bottom: 15px;
+}
+.comment-info {
+   display: flex;
+}
+.comment-content {
+   text-align: justify;
+}
