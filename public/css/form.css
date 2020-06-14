@@ -1,5 +1,5 @@
 .login-form {
-    width: 450px;
+    width: 100%;
     border: 1px solid grey;
     padding: 40px 80px 40px 80px;
     margin: auto;
@@ -15,7 +15,7 @@
     text-align: center;
 }
 .register-form {
-    width: 450px;
+    width: 100%;
     border: 1px solid grey;
     padding: 40px 80px 40px 80px;
     margin: auto;

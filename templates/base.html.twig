@@ -21,7 +21,7 @@
     <nav class="offset navbar navbar-expand-lg navbar-light bg-light static-top shadow">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ path('home') }}">
-                <img src="pictures/logo.png" alt="" width="80px" height='80px'>
+                <img src="/pictures/logo.png" alt="" width="80px" height='80px'>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,14 +78,14 @@
         <div class='row'>
     
     {% if app.user %}
-    <a class='col-3 text-center' href='{{ path('home') }}'><img src='/pictures/house.png'></a>
-    <a class='col-3 text-center' href='/#tricks'><img src='/pictures/snowboard.png'></a>
-    <a class='col-3 text-center' href='{{ path('user.update', {id: app.user.id , slug: app.user.slug }) }}'><img src='/pictures/user.png'></a>
-    <a class='col-3 text-center' href='{{ path('app_logout') }}'><img src='/pictures/disconnect.png'></a>
+    <a class='col-3 text-center' width='35px' href='{{ path('home') }}'><img src='/pictures/house.png'></a>
+    <a class='col-3 text-center' width='35px' href='/#tricks'><img src='/pictures/snowboard.png'></a>
+    <a class='col-3 text-center' width='35px' href='{{ path('user.update', {id: app.user.id , slug: app.user.slug }) }}'><img src='/pictures/user.png'></a>
+    <a class='col-3 text-center' width='35px' href='{{ path('app_logout') }}'><img src='/pictures/disconnect.png'></a>
     {% else %}
-    <a class='col-4 text-center' href='{{ path('home') }}'><img src='/pictures/house.png'></a>
-    <a class='col-4 text-center' href='/#tricks'><img src='/pictures/snowboard.png'></a>
-    <a class='col-4 text-center' href='{{ path('app_login') }}'><img src='/pictures/connect.png'></a>
+    <a class='col-4 text-center' width='35px' href='{{ path('home') }}'><img src='/pictures/house.png'></a>
+    <a class='col-4 text-center' width='35px' href='/#tricks'><img src='/pictures/snowboard.png'></a>
+    <a class='col-4 text-center' width='35px' href='{{ path('app_login') }}'><img src='/pictures/connect.png'></a>
     {% endif %}
     </div>
     {% block javascripts %}
