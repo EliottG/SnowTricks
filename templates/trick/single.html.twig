@@ -18,8 +18,8 @@
         <p>{{ trick.description }}</p>
         <div class='row'>
 
-            {% for picture in trick.pictures  %}
-            <div class="col-xl-3">
+            {% for picture in trick.pictures  %}        
+            <div class="{{ (loop.first )? 'active': ""}} col-xl-3">
                 <img class='pr-2' src="/uploads/trick/{{ picture.name }}" alt='Photo de tricks' width='300px'
                     height="200px">
             </div>
@@ -27,7 +27,7 @@
         </div>
         <div class='row'>
             {% for video in trick.videos %}
-            <div class="col-xl-3">
+            <div class="{{ (loop.first )? 'active': ""}} col-xl-3">
                 <embed src="{{ video.link }}" allowfullscreen="true" width="300" height="200px">
             </div>
             {% endfor %}

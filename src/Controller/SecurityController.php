@@ -63,9 +63,7 @@ class SecurityController extends AbstractController
                 )
             );
             $user->setResetToken(null);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->persistEntity($user);
             $this->addFlash('success', 'Votre mot de passe a bien été modifié ! Pensez à le retenir la prochaine fois !');
            return $this->redirectToRoute('app_login');
         }
@@ -87,14 +85,18 @@ class SecurityController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->persistEntity($user);
             $this->addFlash('success', 'Votre mot de passe a bien été modifié ');
             return $this->redirectToRoute('home');
         }
         return $this->render('security/update.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+    private function persistEntity($entity)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entity);
+        $em->flush();
     }
 }

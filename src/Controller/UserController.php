@@ -6,12 +6,10 @@ use App\Entity\User;
 use App\Form\ResetType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
+use App\Service\MailManager;
+use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mailer\Mailer;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -30,31 +28,15 @@ class UserController extends AbstractController
      * @Route("/modifier/{id}-{slug}", name="user.update",  requirements={"slug": "[a-z0-9\-]*"})
      * @IsGranted("USER_EDIT", subject="user")
      */
-    public function update(User $user, Request $request, SluggerInterface $slugger)
+    public function update(User $user, Request $request, UserManager $userManager)
     {
         
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $pictureFile = $form->get('picture_name')->getData();
-            if ($pictureFile) {
-                $originalFilename =pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$pictureFile->guessExtension();
-                try {
-                    $pictureFile->move(
-                        $this->getParameter('profil_directory'),
-                        $newFilename
-                    );
-                    
-                } catch (FileException $e) {
-
-                }
-                $user->setPictureName($newFilename);
-            }
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $userManager->addProfilPicture($user ,$pictureFile);
+            $this->persistEntity($user);
             $this->addFlash('success','Votre profil a bien été modifié');
             return $this->redirectToRoute('home');
         }
@@ -67,42 +49,31 @@ class UserController extends AbstractController
     /**
      * @Route("/mot-de-passe-oublie", name="user.reset")
      */
-    public function missPassword(Request $request, MailerInterface $mailer)
+    public function missPassword(Request $request, MailManager $mailManager)
     {
 
         $form = $this->createForm(ResetType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $user = $this->repository->findOneByEmail($data['email']);
-            if (!$user) {
-                $this->addFlash('fail', 'Cette adresse n\'est pas associée à un compte Snowtricks');
-                return   $this->redirectToRoute('app_login');
-            }
-            $token = md5(uniqid());
-            try {
-                $user->setResetToken($token);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-            } catch (\Exception $e) {
-                $this->addFlash('fail', 'Une erreur est survenue' . $e->getMessage());
-                return   $this->redirectToRoute('app_login');
-            }
-            $mail = (new Email())
-                ->from('snowtricks.official@gmail.com')
-                ->to($user->getEmail())
-                ->subject('Mot de passe oublié')
-                ->html($this->renderView('email/reset.html.twig', [
-                    'token' => $token
-                ]));
-            $mailer->send($mail);
+            $sendMail = $mailManager->MailMissPassword($data);
+            if ($sendMail != null) {
+                $this->addFlash('fail', $sendMail);
+                return $this->redirectToRoute('app_login');
+            } else {
             $this->addFlash('success', 'Un mail a bien été envoyé à votre adresse email');
             return  $this->redirectToRoute('app_login');
+            }
         }
         return $this->render('user/reset.html.twig', [
             'form' => $form->createView()
         ]);
     }
-    
+
+    private function persistEntity($entity)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entity);
+        $em->flush();
+    }
 }
