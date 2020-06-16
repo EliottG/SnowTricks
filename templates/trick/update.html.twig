@@ -12,27 +12,30 @@
     {{ form_start(form) }}
     {{ form_rest(form) }}
 
-    <h3>Images</h3>
+    <h3 class='mt-4 mb-4'>Image principale</h3>
+    <img src='/uploads/trick/{{ trick.mainImage }}'>
+    <h3 class='mt-4 mb-4'>Images</h3>
     <div class="row">
     {% for picture in trick.pictures  %}
     <div class="col-xl-3">
         <img class='pr-2' src="/uploads/trick/{{ picture.name }}" alt='Photo de tricks' width='300px' height="200px">
-        <a method='DELETE' href="{{ path('delete.trick.picture', {id : picture.id , trickId : trick.id , slug : trick.slug}) }}">Supprimer</a>
+        <a method='DELETE' href="{{ path('delete.trick.picture', {id : picture.id , trickId : trick.id , slug : trick.slug}) }}" alt='supprimer'><img src='/pictures/poubelle.png' width='30px'></a>
     </div>
 
     {% endfor %}
 </div>
-    <a class='delete'  href="{{ path('trick.delete', {id: trick.id}) }}">Supprimer le Trick</a>
 
-<h3>Vidéos</h3>
+<h3 class='mt-4 mb-4'>Vidéos</h3>
 <div class="row">
 {% for video in trick.videos %}
 <div class="col-xl-3">
     <embed src="{{ video.link }}"  allowfullscreen="true" width="300" height="200px">
-    <a method='DELETE' href="{{ path('delete.trick.video', {id : video.id , trickId : trick.id , slug : trick.slug}) }}">Supprimer</a>
+    <a method='DELETE' href="{{ path('delete.trick.video', {id : video.id , trickId : trick.id , slug : trick.slug}) }}" alt='supprimer'><img src='/pictures/poubelle.png' width='30px'></a>
 </div>
 
 {% endfor %}
 </div>
+<a class='mt-5 btn btn-danger delete'  href="{{ path('trick.delete', {id: trick.id,csrf: csrf_token('trick_delete')}) }}">Supprimer le Trick</a>
 </div>
+
 {% endblock %}

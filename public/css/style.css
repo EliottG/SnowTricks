@@ -1,4 +1,9 @@
 
+* {
+    margin:0;
+padding:0;
+
+}
 .background-home {
     position: relative;
     background-image: url('../pictures/background.jpg');
@@ -34,6 +39,10 @@ html {
     background: linear-gradient(to left, rgb(230, 230, 230, 0.8), rgb(226, 226, 226));
 }
 footer {
+    position:relative;
+
+bottom:0;
+width: 100%;
     background-color: black;
     height: 150px;
     display: flex;
@@ -53,10 +62,60 @@ footer {
 .navbar-mobile {
     display: none;
 }
+.img-fluid {
+    width: 100%;
+    height: 250px;
+}
+.carousel {
+    margin-top: 3em;
+    margin-bottom: 3em;
+    background: linear-gradient(to left, rgb(230, 230, 230, 0.8), rgb(226, 226, 226));
+}
+.carousel-control-prev-icon {
+    width: 30px;
+    height: 30px;
+}
+.carousel-control-next-icon {
+    width: 30px;
+    height: 30px;
+}
+.carousel-control-prev {
+    position: absolute;
+    width: 69px;
+    height: 80px;
+    top: 80px;
+    bottom: 70px;
+}
+.carousel-control-next {
+    position: absolute;
+    width: 69px;
+    height: 80px;
+    top: 80px;
+    bottom: 70px;
+}
+.carousel-indicators {
+    position: absolute;
+    bottom: -50px;
+}
+.carousel-indicators li {
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    background-color: rgb(121, 117, 117);
+}
+.show-media button {
+    display: none;
+}
 @media screen and (max-width: 640px) {
+    .show-media button {
+        display: inline;
+    }
     .navbar {
         display: none;
         
+    }
+    .carousel {
+        display: none;
     }
     .navbar-mobile {
         display: block;
@@ -65,7 +124,7 @@ footer {
   margin-right: auto;
   margin-left: auto;
   width: 100%;
-  background-color: white;
+  background-color: rgb(209, 209, 209, 0.8);
   box-shadow: gray 1px 1px 1px;
     }
     footer {

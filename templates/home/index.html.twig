@@ -33,10 +33,10 @@
         </div>
         {% if app.user %}
         <div class="col-3">
-            <a href="{{ path('trick.update', { id: trick.id , slug: trick.slug }) }}"><img src="/pictures/crayon.png"
+            <a href="{{ path('trick.update', { id: trick.id , slug: trick.slug }) }}" alt='modifier'><img src="/pictures/crayon.png"
                     width="37px" alt="editer"></a>
 
-            <a class='delete' href="{{ path('trick.delete', {id: trick.id,csrf: csrf_token('trick_delete')}) }}"><img
+            <a class='delete' href="{{ path('trick.delete', {id: trick.id,csrf: csrf_token('trick_delete')}) }}" alt='supprimer'><img
                     src="/pictures/poubelle.png" width="37px" alt="supprimer"></a>
         </div>
         {% endif %}
