@@ -13,7 +13,7 @@
     {{ form_rest(form) }}
 
     <h3 class='mt-4 mb-4'>Image principale</h3>
-    <img src='/uploads/trick/{{ trick.mainImage }}'>
+    <img width='100%' src='/uploads/trick/{{ trick.mainImage }}'>
     <h3 class='mt-4 mb-4'>Images</h3>
     <div class="row">
     {% for picture in trick.pictures  %}

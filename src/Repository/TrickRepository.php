@@ -35,7 +35,6 @@ class TrickRepository extends ServiceEntityRepository
         ;
     }
     */
-
     /*
     public function findOneBySomeField($value): ?Trick
     {

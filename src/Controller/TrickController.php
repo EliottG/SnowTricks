@@ -11,6 +11,7 @@ use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
 use App\Service\TrickManager;
+use Doctrine\ORM\Mapping\OrderBy;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,7 @@ class TrickController extends AbstractController
     public function index()
     {
         $trick = new Trick();
-        $tricks = $this->repository->findAll();
+        $tricks = $this->repository->findBy(array() , array('id' => 'desc'));
         return $this->render('home/index.html.twig', [
             'tricks' => $tricks,
         ]);

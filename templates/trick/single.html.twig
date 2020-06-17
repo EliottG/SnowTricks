@@ -18,7 +18,8 @@
         <p class="text-justify">{{ trick.description }}</p>
 
         <!-- IMAGES -->
-        <div class="show-media text-center"><button class="mt-4 mb-3 btn btn-dark">Voir les médias</button></div>
+        <div class="show-media text-center"><button id='button-media' onclick="showMedia()" class="mt-4 mb-3 btn btn-dark">Afficher les médias</button></div>
+    
         <div class='row'>
             {% if trick.pictures | length > 0 %}
         <div class="carousel slide col-sm-12 col-lg-6 col-xl-6 shadow" id="carousel-pictures" data-interval="false">
@@ -98,8 +99,10 @@
                 {{comment.content}}
             </div>
         </div>
+      
+       
         {% endfor %}
-
+<div class='text-center'><button class='btn btn-dark' id='loadMoreComments' onclick='loadComments'>Afficher plus</button></div>
 
     </div>
 </div>

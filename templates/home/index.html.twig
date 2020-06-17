@@ -5,11 +5,11 @@
 {% block body %}
 <div class='background-home'>
     <div class="container">
-        <h1 id='up' class='pt-5 text-light font-weight-bold'>SnowTricks</h1>
+        <h1 class='pt-5 text-light font-weight-bold'>SnowTricks</h1>
         <h2 class='pt-2 text-uppercase text-info'>Riders<br> on<br> the<br> storm *</h2>
         
     </div>
-    <a class='down' href='#down'><img src='/pictures/down.png'></a>
+    <a class='up' href='#down'><img src='/pictures/down.png'></a>
 </div>
 
 
@@ -21,7 +21,7 @@
 <div id="tricks" class="container-fluid mt-4">
     <div class="row">
         {% for trick in tricks %}
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="card-trick col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
             <a class="text-left" href="{{ path('trick.single' , {slug : trick.slug, id : trick.id}) }}">
                 <div class="one-trick shadow">
                     <img class="card-picture" src='/uploads/trick/{{ trick.mainImage }}' height="200px">
@@ -48,9 +48,9 @@
 {% endfor %}
 
 </div>
-<a class='text-right up' id='down' href='#up'><img src='/pictures/up.png'></a>
-<button onlick='loadMore' class='text-center btn btn-secondary'>Voir plus</button>
 
+<div class='text-center'><a href='#down'><button id='buttonLoadMore' onclick='loadMore()' class='text-uppercase pt-2 pb-2 pr-5 pl-5 btn btn-dark'>Voir plus</button></a></div>
+<a class='' id='down' href='#up'><img src='/pictures/up.png'></a>
 </div>
 
 
