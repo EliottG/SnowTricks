@@ -34,6 +34,15 @@ class Comment
      */
     private $trick;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTime();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -55,7 +64,10 @@ class Comment
     {
         return $this->user;
     }
-
+    public function getFormatedDate()
+    {
+        return $this->created_at->format('d/m/Y');
+    }
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -71,6 +83,18 @@ class Comment
     public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }

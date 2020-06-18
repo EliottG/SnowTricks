@@ -12,8 +12,8 @@
                     <div class="row">
                         <div class="col-xl-2">
                             {% if user.pictureName %}
-                            <img class='pr-2' src="/uploads/profil/{{ user.pictureName }}" alt='Photo de profil'
-                                width='150px'>
+                            <img class='pr-2 profil-picture' src="/uploads/profil/{{ user.pictureName }}" alt='Photo de profil'
+                                width='200px' height='200px'>
                             {% else %}
                             <img class='pr-2' src="/uploads/profil/usual.jpg" alt='Photo de profil' width='150px'>
                             {% endif %}

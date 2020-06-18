@@ -4,41 +4,105 @@
 
 {% block body %}
 <div class='container'>
-    <a href="/#tricks"><button class="btn btn-primary">Retour aux figures</button></a>
     {% if app.user %}
     <a href="{{ path('trick.update' , { id : trick.id , slug : trick.slug} )}}"><button
-            class="btn btn-primary">Modifier</button></a>
+            class="mt-4 mb-4 text-center btn btn-dark">Modifier</button></a>
     {% endif %}
-    <h1>{{ trick.title }} </h1>
-    <p>{{ trick.description }}</p>
-    <div class='row'>
-        {% for picture in trick.pictures  %}
-        <div class="col-xl-3">
-            <img class='pr-2' src="/uploads/trick/{{ picture.name }}" alt='Photo de tricks' width='300px'
-                height="200px">
-        </div>
-        {% endfor %}
-    </div>
-    <div class='row'>
-        {% for video in trick.videos %}
-        <div class="col-xl-3">
-            <embed src="{{ video.link }}" allowfullscreen="true" width="300" height="200px">
-        </div>
-        {% endfor %}
-    </div>
-    {% if app.user %}
-    {{ form_start(form) }}
-    {{ form_end(form)  }}
-    {% endif %}
-    <h2>Commentaires</h2>
-    {% for comment in trick.comments %}
-    <p>{% if comment.user.pictureName %}
-        <img class='pr-2' src="/uploads/profil/{{ comment.user.pictureName }}" alt='Photo de profil' width='80px' height='80px'>
-        {% else %}
-        <img class='pr-2' src="/uploads/profil/usual.jpg" alt='Photo de profil' width='80px' height='80px'>
-        {% endif %}
-    <h3>{{ comment.user.username }}</h3>{{ comment.content }}</p>
-    {% endfor %}
+    <div class='trick-single shadow'>
+        <img src="/uploads/trick/{{trick.mainImage}}" width="100%">
+        <p>
+        <h1>{{ trick.title }} </h1> <p class="text-center lead">Publié le : <span class="font-weight-bold">{{trick.formatedDate }}</span> |
+        Catégorie : <span class="font-weight-bold">{{trick.category}}</span> | Commentaires : <span
+            class="font-weight-bold"> {{ trick.comments | length }}</span> </p>
+            <h4 class="text-uppercase lead font-weight-bold">Description :</h4>
+        <p class="text-justify">{{ trick.description }}</p>
 
+        <!-- IMAGES -->
+        <div class="show-media text-center"><button id='button-media' onclick="showMedia()" class="mt-4 mb-3 btn btn-dark">Afficher les médias</button></div>
+    
+        <div class='row'>
+            {% if trick.pictures | length > 0 %}
+        <div class="carousel slide col-sm-12 col-lg-6 col-xl-6 shadow" id="carousel-pictures" data-interval="false">
+			<ol class="carousel-indicators">
+            {% for i in trick.pictures %}
+				<li data-target="#carousel-pictures" data-slide-to="{{ loop.index0 }}" class="{{ (loop.first) ? 'active' }}"></li>
+            {% endfor %}
+			</ol><!-- /.carousel-indicators -->
+            <div class="carousel-inner">
+			{% for picture in trick.pictures %}
+				<div class="carousel-item {{ (loop.first) ? ' active' }}">
+					<img class="img-fluid" src="/uploads/trick/{{picture.name }}">
+				</div>
+            {% endfor %}
+			</div><!-- /.carousel-inner -->
+			
+			<a href="#carousel-pictures" class="carousel-control-prev" data-slide="prev">
+				<span class="carousel-control-prev-icon"></span>
+				<span class="sr-only" aria-hidden="true">Prev</span>
+			</a>
+			<a href="#carousel-pictures" class="carousel-control-next" data-slide="next">
+				<span class="carousel-control-next-icon"></span>
+				<span class="sr-only" aria-hidden="true">Next</span>
+			</a>
+        </div>
+        {% endif %}
+        <!-- VIDEOS -->
+        {% if trick.videos | length > 0 %}
+            <div class="carousel slide col-sm-12 col-lg-6 col-xl-6 shadow" id="carousel-videos" data-interval="false">
+                <ol class="carousel-indicators">
+                {% for i in trick.videos %}
+                    <li data-target="#carousel-videos" data-slide-to="{{ loop.index0 }}" class="{{ (loop.first) ? 'active' }}"></li>
+                {% endfor %}
+                </ol><!-- /.carousel-indicators -->
+                <div class="carousel-inner">
+                {% for video in trick.videos %}
+                    <div class="carousel-item {{ (loop.first) ? ' active' }}">
+                        <iframe class="img-fluid" src="{{ video.link }}" allowfullscreen>
+                            </iframe>
+                    </div>
+                {% endfor %}
+                </div><!-- /.carousel-inner -->
+                
+                <a href="#carousel-videos" class="carousel-control-prev" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="sr-only" aria-hidden="true">Prev</span>
+                </a>
+                <a href="#carousel-videos" class="carousel-control-next" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="sr-only" aria-hidden="true">Next</span>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    {% if app.user %}
+    <h4 class="text-uppercase lead font-weight-bold">Ajouter un commentaire :</h4>
+    {{ form_start(form) }}
+
+    {{ form_end(form)  }}
+    {% else %}
+    <h3 class="text-center">Connectez-vous afin de pouvoir poster un commentaire</h3>
+    {% endif %}
+
+
+    <div class='comments shadow'>
+        <p class="mb-5 ml-2 lead text-uppercase">Commentaires</p>
+
+        {% for comment in trick.comments %}
+        <div class="comment row">
+            <div class="col-xl-3 comment-info ">
+                <img class="comment-picture" width="80px" height="80px"
+                    src="/uploads/profil/{{comment.user.pictureName}}">
+                <p class="ml-3"><span class="font-weight-bold">{{ comment.user.username }}</span><br> le
+                    {{ comment.formatedDate}}</p>
+            </div>
+            <div class="col-xl-9">
+                {{comment.content}}
+            </div>
+        </div>
+        {% endfor %}
+<div class='text-center'><button class='btn btn-dark' id='loadMoreComments' onclick='loadComments()'>Afficher plus</button></div>
+
+    </div>
+</div>
 </div>
 {% endblock %}

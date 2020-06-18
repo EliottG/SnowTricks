@@ -22,7 +22,7 @@ class Trick
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $title;
 
@@ -56,6 +56,7 @@ class Trick
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true,
      * cascade= {"persist"})
+     * @ORM\OrderBy({"id" = "desc"})
      */
     private $comments;
 

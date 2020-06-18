@@ -36,7 +36,7 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-    
+
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
@@ -51,7 +51,8 @@ class SecurityController extends AbstractController
     /**
      * @Route("/reinitialisation-{token}", name="reset.password")
      */
-    public function resetPassword($token, UserRepository $repository, Request $request, UserPasswordEncoderInterface $passwordEncoder) {
+    public function resetPassword($token, UserRepository $repository, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
         $user = $repository->findOneBy(['reset_token' => $token]);
         $form = $this->createForm(ConfirmResetType::class, $user);
         $form->handleRequest($request);
@@ -63,11 +64,9 @@ class SecurityController extends AbstractController
                 )
             );
             $user->setResetToken(null);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->persistEntity($user);
             $this->addFlash('success', 'Votre mot de passe a bien été modifié ! Pensez à le retenir la prochaine fois !');
-           return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_login');
         }
         return $this->render('security/reset.html.twig', [
             'form' => $form->createView()
@@ -77,7 +76,8 @@ class SecurityController extends AbstractController
     /**
      * @Route("/{id}-modifier/mot-de-passe" , name="update.password")
      */
-    public function updatePassword(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder) {
+    public function updatePassword(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
         $form = $this->createForm(ConfirmResetType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -87,14 +87,18 @@ class SecurityController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->persistEntity($user);
             $this->addFlash('success', 'Votre mot de passe a bien été modifié ');
             return $this->redirectToRoute('home');
         }
         return $this->render('security/update.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+    private function persistEntity($entity)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entity);
+        $em->flush();
     }
 }

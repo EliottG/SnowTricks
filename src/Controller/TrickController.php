@@ -5,19 +5,17 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Picture;
 use App\Entity\Trick;
-use App\Entity\User;
 use App\Entity\Video;
-use App\Form\CategoryTrickType;
 use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
+use App\Service\TrickManager;
+use Doctrine\ORM\Mapping\OrderBy;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class TrickController extends AbstractController
 {
@@ -33,7 +31,7 @@ class TrickController extends AbstractController
     public function index()
     {
         $trick = new Trick();
-        $tricks = $this->repository->findAll();
+        $tricks = $this->repository->findBy(array(), array('id' => 'desc'));
         return $this->render('home/index.html.twig', [
             'tricks' => $tricks,
         ]);
@@ -42,68 +40,19 @@ class TrickController extends AbstractController
      * @Route("/trick/ajouter", name="trick.create")
      * @Security("is_granted('ROLE_USER')")
      */
-    public function create(Request $request, SluggerInterface $slugger) 
+    public function create(Request $request, TrickManager $trickManager)
     {
         $trick = new Trick;
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $mainPicture = $form->get('main_image')->getData();
-            if ($mainPicture) {
-                $originalFilename =pathinfo($mainPicture->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$mainPicture->guessExtension();
-                try {
-                    $mainPicture->move(
-                        $this->getParameter('trick_directory'),
-                        $newFilename
-                    );
-                    
-                } catch (FileException $e) {
-
-                }
-                $trick->setMainImage($newFilename);
-            }
+            $trickManager->addMainPictureToTrick($trick, $mainPicture);
             $pictures = $form->get('picture')->getData();
-            foreach ($pictures as $picture) {
-                $file = md5(uniqid()) . '.' . $picture->guessExtension();
-                $picture->move(
-                    $this->getParameter('trick_directory'),
-                    $file
-                );
-                $trickPicture = new Picture();
-                $trickPicture->setName($file);
-                $trick->addPicture($trickPicture);
-            }
+            $trickManager->addPicturesToTrick($trick, $pictures);
             $getVideos = $form->get('videos')->getData();
-            $videos = explode(',', $getVideos);
-            foreach ($videos as $video) {
-                if ($video != null) {
-                if (preg_match('#youtube#', $video) || preg_match('#dailymotion#', $video)) {
-                    if (preg_match('#youtube#', $video)) {
-                        $pattern = "#watch\?v=#";
-                        $replace =  "embed/";
-                        $video = preg_replace($pattern, $replace, $video);
-                        
-                    } else if ((preg_match('#dailymotion#', $video))) {
-                        $pattern = "#video#";
-                        $replace =  "embed/video";
-                        $video = preg_replace($pattern, $replace, $video);
-                    }
-                    $trickVideo = new Video();
-                    $trickVideo->setLink($video);
-                    $trick->addVideo($trickVideo);
-                } else {
-                    $this->addFlash('fail', 'L\'une des vidéos que vous souhaitez ajouter ne provient pas des sites autorisés');
-                    return $this->redirectToRoute('trick.create', [
-
-                    ]);
-                }
-            }
-        }
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($trick);
-            $entityManager->flush();
+            $trickManager->addVideosToTrick($trick, $getVideos);
+            $this->persistEntity($trick);
             $this->addFlash('success', 'Votre Trick a bien été ajouté !');
             return $this->redirectToRoute('trick.single', [
                 'id' => $trick->getId(),
@@ -118,7 +67,7 @@ class TrickController extends AbstractController
      * @Route("/trick/modifier/{id}-{slug}", name="trick.update",  requirements={"id":"\d+","slug": "[a-z0-9\-]+"})
      *  @Security("is_granted('ROLE_USER')")
      */
-    public function update(Trick $trick, Request $request, SluggerInterface $slugger)
+    public function update(Trick $trick, Request $request, TrickManager $trickManager)
     {
 
         $trickId = $trick->getId();
@@ -127,62 +76,12 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $getVideos = $form->get('videos')->getData();
-            $videos = explode(',', $getVideos);
-            foreach ($videos as $video) {
-                if ($video != null) {
-                if (preg_match('#youtube#', $video) || preg_match('#dailymotion#', $video)) {
-                    if (preg_match('#youtube#', $video)) {
-                        $pattern = "#watch\?v=#";
-                        $replace =  "embed/";
-                        $video = preg_replace($pattern, $replace, $video);
-                        
-                    } else if ((preg_match('#dailymotion#', $video))) {
-                        $pattern = "#video#";
-                        $replace =  "embed/video";
-                        $video = preg_replace($pattern, $replace, $video);
-                    }
-                    $trickVideo = new Video();
-                    $trickVideo->setLink($video);
-                    $trick->addVideo($trickVideo);
-                } else {
-                    $this->addFlash('fail', 'L\'une des vidéos que vous souhaitez ajouter ne provient pas des sites autorisés');
-                    return $this->redirectToRoute('trick.update', [
-                        'id' => $trickId,
-                        'slug' => $trickSlug
-                    ]);
-                }
-            }
-        }
-        $mainPicture = $form->get('main_image')->getData();
-        if ($mainPicture) {
-            $originalFilename =pathinfo($mainPicture->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename.'-'.uniqid().'.'.$mainPicture->guessExtension();
-            try {
-                $mainPicture->move(
-                    $this->getParameter('trick_directory'),
-                    $newFilename
-                );
-                
-            } catch (FileException $e) {
-
-            }
-            $trick->setMainImage($newFilename);
-        }
+            $trickManager->addVideosToTrick($trick, $getVideos);
+            $mainPicture = $form->get('main_image')->getData();
+            $trickManager->addMainPictureToTrick($trick, $mainPicture);
             $pictures = $form->get('picture')->getData();
-            foreach ($pictures as $picture) {
-                $file = md5(uniqid()) . '.' . $picture->guessExtension();
-                $picture->move(
-                    $this->getParameter('trick_directory'),
-                    $file
-                );
-                $trickPicture = new Picture();
-                $trickPicture->setName($file);
-                $trick->addPicture($trickPicture);
-            }
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($trick);
-            $entityManager->flush();
+            $trickManager->addPicturesToTrick($trick, $pictures);
+            $this->persistEntity($trick);
             $this->addFlash('success', 'Le trick a bien été modifié');
             return $this->redirectToRoute('trick.single', [
                 'id' => $trickId,
@@ -204,12 +103,10 @@ class TrickController extends AbstractController
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $user = $repository->find($this->getUser()->getId());
             $comment->setTrick($trick);
             $comment->setUser($user);
-            $em->persist($comment);
-            $em->flush();
+            $this->persistEntity($comment);
             $this->addFlash('success', 'Votre commentaire a bien été ajouté !');
             return $this->redirectToRoute('trick.single', [
                 'id' => $trick->getId(),
@@ -229,10 +126,7 @@ class TrickController extends AbstractController
     public function delete(Request $request, Trick $trick)
     {
         if ($this->isCsrfTokenValid("trick_delete", $request->query->get('csrf'))) {
-
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($trick);
-            $em->flush();
+            $this->removeEntity($trick);
             $this->addFlash('fail', 'Le trick a bien été supprimé !');
         }
 
@@ -247,9 +141,7 @@ class TrickController extends AbstractController
         $trick = $picture->getTrick();
         $trickId = $trick->getId();
         $trickSlug = $trick->getSlug();
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($picture);
-        $em->flush();
+        $this->removeEntity($picture);
         $this->addFlash('fail', 'Vidéo supprimée');
         return $this->redirectToRoute('trick.update', [
             'id' => $trickId,
@@ -260,17 +152,28 @@ class TrickController extends AbstractController
      * @Route("/supprimer/video/{id}", name="delete.trick.video")
      * @Security("is_granted('ROLE_USER')")
      */
-    public function deleteVideo(Video $video) {
+    public function deleteVideo(Video $video)
+    {
         $trick = $video->getTrick();
         $trickId = $trick->getId();
         $trickSlug = $trick->getSlug();
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($video);
-        $em->flush();
+        $this->removeEntity($video);
         $this->addFlash('fail', 'Image supprimée');
         return $this->redirectToRoute('trick.update', [
             'id' => $trickId,
             'slug' => $trickSlug
         ]);
+    }
+    private function persistEntity($entity)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entity);
+        $em->flush();
+    }
+    private function removeEntity($entity)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($entity);
+        $em->flush();
     }
 }
