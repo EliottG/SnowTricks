@@ -31,7 +31,7 @@ class TrickController extends AbstractController
     public function index()
     {
         $trick = new Trick();
-        $tricks = $this->repository->findBy(array() , array('id' => 'desc'));
+        $tricks = $this->repository->findBy(array(), array('id' => 'desc'));
         return $this->render('home/index.html.twig', [
             'tricks' => $tricks,
         ]);

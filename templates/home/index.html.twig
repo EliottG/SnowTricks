@@ -21,8 +21,8 @@
 <div id="tricks" class="container-fluid mt-4">
     <div class="row">
         {% for trick in tricks %}
-        <div class="card-trick col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
-            <a class="text-left" href="{{ path('trick.single' , {slug : trick.slug, id : trick.id}) }}">
+        <a href="{{ path('trick.single' , {slug : trick.slug, id : trick.id}) }}">
+            <div class="card-trick col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
                 <div class="one-trick shadow">
                     <img class="card-picture" src='/uploads/trick/{{ trick.mainImage }}' height="200px">
                     <div class="row body-card">

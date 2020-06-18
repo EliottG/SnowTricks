@@ -11,9 +11,6 @@ use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class UserController extends AbstractController
@@ -30,14 +27,14 @@ class UserController extends AbstractController
      */
     public function update(User $user, Request $request, UserManager $userManager)
     {
-        
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $pictureFile = $form->get('picture_name')->getData();
-            $userManager->addProfilPicture($user ,$pictureFile);
+            $userManager->addProfilPicture($user, $pictureFile);
             $this->persistEntity($user);
-            $this->addFlash('success','Votre profil a bien été modifié');
+            $this->addFlash('success', 'Votre profil a bien été modifié');
             return $this->redirectToRoute('home');
         }
         return $this->render('user/index.html.twig', [
@@ -61,8 +58,8 @@ class UserController extends AbstractController
                 $this->addFlash('fail', $sendMail);
                 return $this->redirectToRoute('app_login');
             } else {
-            $this->addFlash('success', 'Un mail a bien été envoyé à votre adresse email');
-            return  $this->redirectToRoute('app_login');
+                $this->addFlash('success', 'Un mail a bien été envoyé à votre adresse email');
+                return  $this->redirectToRoute('app_login');
             }
         }
         return $this->render('user/reset.html.twig', [

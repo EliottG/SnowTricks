@@ -88,7 +88,7 @@
         <p class="mb-5 ml-2 lead text-uppercase">Commentaires</p>
 
         {% for comment in trick.comments %}
-        <div class="row comment">
+        <div class="comment row">
             <div class="col-xl-3 comment-info ">
                 <img class="comment-picture" width="80px" height="80px"
                     src="/uploads/profil/{{comment.user.pictureName}}">
@@ -99,10 +99,8 @@
                 {{comment.content}}
             </div>
         </div>
-      
-       
         {% endfor %}
-<div class='text-center'><button class='btn btn-dark' id='loadMoreComments' onclick='loadComments'>Afficher plus</button></div>
+<div class='text-center'><button class='btn btn-dark' id='loadMoreComments' onclick='loadComments()'>Afficher plus</button></div>
 
     </div>
 </div>

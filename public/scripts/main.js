@@ -33,13 +33,13 @@ function showMedia() {
 }
 // Afficher plus (trick accueil)
 const tricks = document.getElementsByClassName("card-trick");
-if (tricks.length > 8) {
+const loadMoreButton = document.getElementById('buttonLoadMore');
+let visibleTricks = 8
+if (tricks.length > visibleTricks) {
   for (let i = 8; i < tricks.length; i++) {
     tricks[i].style.display = 'none';
   }
 }
-const loadMoreButton = document.getElementById('buttonLoadMore');
-let visibleTricks = 8
 function loadMore() {
   for (let i = 0; i < 4; i++) {
     if (tricks[visibleTricks + i] != undefined) {
@@ -49,28 +49,28 @@ function loadMore() {
     }
   }
   visibleTricks = visibleTricks + 4;
+
 }
 // Afficher plus (commentaire)
 const comments = document.getElementsByClassName('comment');
-if (comments.length > 4) {
+const buttonLoadMore = document.getElementById('loadMoreComments')
+let visibleComments = 4;
+if (comments.length <= visibleComments) {
+  buttonLoadMore.style.display = 'none';
+} else {
   for (let i = 4; i < comments.length; i++) {
     comments[i].style.display = 'none';
   }
 }
-
-
-const loadMoreComments = document.getElementById('loadMoreComments')
-
-let visibleComments = 4;
-function loadComments(){
+function loadComments() {
   for (let i = 0; i < 4; i++) {
     if (comments[visibleComments + i] != undefined) {
-    comments[visibleComments + i].style.display = 'block'
+      comments[visibleComments + i].style.display = '';
     } else {
-      loadMoreComments.style.display = 'none';
+      buttonLoadMore.style.display = 'none';
     }
-    visibleTricks = visibleTricks + 4;
   }
+  visibleComments = visibleComments + 4;
 }
 
 

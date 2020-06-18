@@ -4,8 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    profil_directory : '%kernel.project_dir%/public/uploads/profil'
-    trick_directory : '%kernel.project_dir%/public/uploads/trick'
+    app.profil_directory : '%kernel.project_dir%/public/uploads/profil'
+    app.trick_directory : '%kernel.project_dir%/public/uploads/trick'
 
 services:
     # default configuration for services in *this* file
@@ -13,8 +13,8 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
-            $trickDirectory: "%trick_directory%"
-            $profilDirectory: "%profil_directory%"
+            $trickDirectory: "%app.trick_directory%"
+            $profilDirectory: "%app.profil_directory%"
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
