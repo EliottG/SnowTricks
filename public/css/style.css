@@ -4,6 +4,11 @@
 padding:0;
 
 }
+html, body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
 .background-home {
     position: relative;
     background-image: url('../pictures/background.jpg');
@@ -31,6 +36,10 @@ padding:0;
     color: black;
     
 }
+.html-content {
+    min-height: 100%;
+    margin-bottom: -142px; 
+}
 html {
     scroll-behavior: smooth;
 }
@@ -40,7 +49,6 @@ html {
 }
 footer {
     position:relative;
-
 bottom:0;
 width: 100%;
     background-color: black;
@@ -59,7 +67,6 @@ width: 100%;
 .navbar-mobile {
     display: none;
 }
-
 @media screen and (max-width: 640px) {
     .navbar {
         display: none;

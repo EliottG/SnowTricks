@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/css/form.css">
         <link rel="stylesheet" href="/css/trick.css">
-        <link rel="shortcut icon" href="pictures/logo.png">
+        <link rel="shortcut icon" href="/pictures/logo.png">
     {% endblock %}
 </head>
 
@@ -70,7 +70,10 @@
         </p>
     </div>
     {% endfor %}
-    {% block body %}{% endblock %}
+    <div class='html-content'>
+    {% block body %}
+    {% endblock %}
+    </div>
      <footer>
         <p class='text-light text-center text-uppercase'>© Copyright Eliott Geoffroy Deudon-Combe</p>
     </footer>
@@ -90,8 +93,6 @@
     </div>
     {% block javascripts %}
     
-   
-  
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -102,6 +103,8 @@
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
         <script src="/scripts/main.js"></script>
+        <script src="/scripts/loadTricks.js"></script>
+        <script src="/scripts/loadComments.js"></script>
     {% endblock %}
 </body>
 

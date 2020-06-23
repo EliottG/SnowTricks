@@ -11,7 +11,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        for ($i = 1; $i <= 20 ; $i ++) {
+        for ($i = 1; $i <= 18 ; $i ++) {
             $trick = new Trick();
             $trick->setTitle('Ma figure' .$i);
             $trick->setCategory('Slide');

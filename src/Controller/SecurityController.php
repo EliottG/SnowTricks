@@ -41,7 +41,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/déconnexion", name="app_logout")
+     * @Route("/deconnexion", name="app_logout")
      * @Security("is_granted('ROLE_USER')")
      */
     public function logout()
@@ -49,11 +49,10 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
     /**
-     * @Route("/reinitialisation-{token}", name="reset.password")
+     * @Route("/reinitialisation-{reset_token}", name="reset.password")
      */
-    public function resetPassword($token, UserRepository $repository, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function resetPassword(User $user, UserRepository $repository, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $user = $repository->findOneBy(['reset_token' => $token]);
         $form = $this->createForm(ConfirmResetType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

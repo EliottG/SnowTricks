@@ -31,48 +31,4 @@ function showMedia() {
     }
   }
 }
-// Afficher plus (trick accueil)
-const tricks = document.getElementsByClassName("card-trick");
-const loadMoreButton = document.getElementById('buttonLoadMore');
-let visibleTricks = 8
-if (tricks.length > visibleTricks) {
-  for (let i = 8; i < tricks.length; i++) {
-    tricks[i].style.display = 'none';
-  }
-}
-function loadMore() {
-  for (let i = 0; i < 4; i++) {
-    if (tricks[visibleTricks + i] != undefined) {
-    tricks[visibleTricks + i].style.display = 'block'
-    } else {
-      loadMoreButton.style.display = 'none';
-    }
-  }
-  visibleTricks = visibleTricks + 4;
-
-}
-// Afficher plus (commentaire)
-const comments = document.getElementsByClassName('comment');
-const buttonLoadMore = document.getElementById('loadMoreComments')
-let visibleComments = 4;
-if (comments.length <= visibleComments) {
-  buttonLoadMore.style.display = 'none';
-} else {
-  for (let i = 4; i < comments.length; i++) {
-    comments[i].style.display = 'none';
-  }
-}
-function loadComments() {
-  for (let i = 0; i < 4; i++) {
-    if (comments[visibleComments + i] != undefined) {
-      comments[visibleComments + i].style.display = '';
-    } else {
-      buttonLoadMore.style.display = 'none';
-    }
-  }
-  visibleComments = visibleComments + 4;
-}
-
-
-
 
