@@ -1,4 +1,4 @@
 <h3>Mot de passe oublié</h3>
 <p>Pour reinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous:<br> 
-<a href='{{ absolute_url(path('reset.password', {token : token})) }}'>Reinitialiser mon mot de passe</a>
+<a href='{{ absolute_url(path('reset.password', {'reset_token' : token})) }}'>Reinitialiser mon mot de passe</a>
 <p>

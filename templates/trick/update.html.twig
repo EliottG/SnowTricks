@@ -34,8 +34,11 @@
 </div>
 
 {% endfor %}
-</div>
-<a class='mt-5 btn btn-danger delete'  href="{{ path('trick.delete', {id: trick.id,csrf: csrf_token('trick_delete')}) }}">Supprimer le Trick</a>
-</div>
+<div>
 
+</div>
+</div>
+<div>
+    <a class='mt-5 btn btn-danger delete'  href="{{ path('trick.delete', {id: trick.id,csrf: csrf_token('trick_delete')}) }}">Supprimer le Trick</a>
+</div>
 {% endblock %}
