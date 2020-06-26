@@ -1,0 +1,6 @@
+
+---
+déploiement :
+  tâches :
+    - export DEPLOYPATH = / home / geel5867 / public_html /
+    - / bin / cp -R * $ DEPLOYPATH
