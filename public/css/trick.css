@@ -82,9 +82,6 @@
 #loadMoreComments {
     display: inline;
 }
-.delete {
-    margin: 54px;
-}
 @media screen and (max-width: 640px) {
     .show-media button {
         display: inline;
