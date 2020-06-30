@@ -2,5 +2,5 @@
 ---
 déploiement :
   tâches :
-    - export DEPLOYPATH = / home / geel5867 / public_html /
+    - export DEPLOYPATH = / home / geel5867 / public_html / st
     - / bin / cp -R * $ DEPLOYPATH
