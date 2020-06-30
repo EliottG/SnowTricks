@@ -26,7 +26,7 @@ class MailManager
 
     public function mailRegistration($user) {
         $email = (new Email())
-            ->from('snowtricks.official@gmail.com')
+            ->from('verification@snowtricks.eliottgdc.com')
             ->to($user->getEmail())
             ->subject('Confirmation de votre compte Snowtricks')
             ->html($this->twig->render('email/activation.html.twig', [
@@ -53,7 +53,7 @@ class MailManager
             return $failMessage;
         }
         $mail = (new Email())
-            ->from('snowtricks.official@gmail.com')
+            ->from('verification@snowtricks.eliottgdc.com')
             ->to($user->getEmail())
             ->subject('Mot de passe oublié')
             ->html($this->twig->render('email/reset.html.twig', [
