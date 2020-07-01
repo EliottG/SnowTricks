@@ -16,3 +16,4 @@ README
   </ol>
   
   If you have any problem with the installation, please contact me : eliott.geoffroy@gmail.com
+  CodeClimate : https://codeclimate.com/github/EliottG/SnowTricks
