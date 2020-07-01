@@ -15,5 +15,5 @@ README
     <li>Download the database dbsnowtricks  with fixtures</li>
   </ol>
   
-  If you have any problem with the installation, please contact me : eliott.geoffroy@gmail.com
-  CodeClimate : https://codeclimate.com/github/EliottG/SnowTricks
+  <p>If you have any problem with the installation, please contact me : eliott.geoffroy@gmail.com<p>
+ <p> CodeClimate : https://codeclimate.com/github/EliottG/SnowTricks</p>
