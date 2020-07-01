@@ -11,7 +11,6 @@ use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
 use App\Service\TrickManager;
-use Doctrine\ORM\Mapping\OrderBy;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +41,7 @@ class TrickController extends AbstractController
      */
     public function create(Request $request, TrickManager $trickManager)
     {
-        $trick = new Trick;
+        $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

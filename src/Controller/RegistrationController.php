@@ -56,7 +56,7 @@ class RegistrationController extends AbstractController
         $user->setIsValid(true);      
         $this->persistEntity($user);
         
-        $this->addFlash('success', 'Félications, votre compte est désormais activé !');
+        $this->addFlash('success', 'Félicitations, votre compte est désormais activé !');
         return $this->redirectToRoute('home');
     }
     private function persistEntity($entity)

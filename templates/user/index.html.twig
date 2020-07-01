@@ -8,7 +8,7 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <div class="row">
-                <div class="col-xl-12 text-center mb-5">
+                <div class="col-xl-12 text-center">
                     <div class="row">
                         <div class="col-xl-2">
                             {% if user.pictureName %}
@@ -35,11 +35,11 @@
 
     </div>
 </div>
-</div>
 <div class="container">
     {{ form_start(form)}}
 
     {{ form_rest(form) }}
     <a href='{{ path('update.password', {id : id})}}'>Modifier mon mot de passe</a>
+</div>
 </div>
 {% endblock %}
